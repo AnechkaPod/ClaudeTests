@@ -48,11 +48,15 @@ Single-page React 19 app with no routing. All state and API calls live in `src/A
 ASP.NET Core 9 MVC controller-based API. `Program.cs` only handles service registration and middleware (`AddControllers`, `AddCors`, `MapControllers`). Business logic lives in `Controllers/TodosController.cs` (`[ApiController]`, `[Route("api/todos")]`). State is in-memory static fields on the controller — data resets on server restart. The model is in `Models/TodoItem.cs` (`Id`, `Title`, `IsComplete`).
 
 ### API contract
-| Method | Route | Body |
-|--------|-------|------|
-| GET | `/api/todos` | — |
-| POST | `/api/todos` | `{ "title": "..." }` |
-| PUT | `/api/todos/{id}` | `{ "id", "title", "isComplete" }` |
-| DELETE | `/api/todos/{id}` | — |
+| Method | Route | Body | Description |
+|--------|-------|------|-------------|
+| GET | `/api/todos` | — | Get all todos |
+| POST | `/api/todos` | `{ "title": "..." }` | Create a todo |
+| PUT | `/api/todos/{id}` | `{ "id", "title", "isComplete" }` | Update a todo |
+| DELETE | `/api/todos/{id}` | — | Delete a todo |
+| DELETE | `/api/todos/completed` | — | Remove all completed todos |
 
 The C# API uses camelCase JSON serialization by default in ASP.NET Core, matching the React client's expectations.
+
+### Client API calls (`client/src/App.jsx`)
+All fetch calls use the `/api/todos` base path (proxied by Vite to `http://localhost:5000`). When adding a new endpoint, add the fetch call as an `async function` in `App.jsx` alongside the existing ones (`addTodo`, `toggleTodo`, `deleteTodo`, `clearCompleted`).
