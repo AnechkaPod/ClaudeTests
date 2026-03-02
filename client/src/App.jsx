@@ -38,6 +38,11 @@ export default function App() {
     setTodos(prev => prev.filter(t => t.id !== id))
   }
 
+  async function clearCompleted() {
+    await fetch(`${API}/completed`, { method: 'DELETE' })
+    setTodos(prev => prev.filter(t => !t.isComplete))
+  }
+
   return (
     <div style={styles.container}>
       <h1 style={styles.heading}>Todo List</h1>
@@ -68,6 +73,12 @@ export default function App() {
           </li>
         ))}
       </ul>
+
+      {todos.some(t => t.isComplete) && (
+        <button style={styles.clearBtn} onClick={clearCompleted}>
+          Clear completed
+        </button>
+      )}
 
       {todos.length === 0 && (
         <p style={styles.empty}>No todos yet. Add one above!</p>
@@ -148,5 +159,15 @@ const styles = {
     color: '#9ca3af',
     textAlign: 'center',
     marginTop: 32,
+  },
+  clearBtn: {
+    marginTop: 16,
+    background: 'none',
+    border: '1px solid #e5e7eb',
+    borderRadius: 6,
+    padding: '6px 14px',
+    fontSize: 14,
+    color: '#6b7280',
+    cursor: 'pointer',
   },
 }

@@ -46,4 +46,11 @@ public class TodosController : ControllerBase
         _todos.Remove(todo);
         return NoContent();
     }
+
+    [HttpDelete("completed")]
+    public IActionResult ClearCompleted()
+    {
+        _todos.RemoveAll(t => t.IsComplete);
+        return NoContent();
+    }
 }
